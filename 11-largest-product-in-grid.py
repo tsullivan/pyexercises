@@ -44,67 +44,36 @@ def get_grid():
 
     return grid
 
-# find greatest product of four adjacent left-to-right
-def product_ltr(g):
+def products(g):
     products = []
     for i in range(0, len(g)):
         for j in range(0, len(g[i])):
-            seq = g[i][j:j+4]
-            if len(seq) == 4:
-                products.append((productify(seq), seq))
-            else:
-                break
+
+            # left-to-right products
+            seq1 = g[i][j:j+4]
+            if len(seq1) == 4:
+                products.append((productify(seq1), seq1))
+
+            # top-to-bottom products
+            if i < len(g) - 3:
+                seq2 = [g[i][j], g[i+1][j], g[i+2][j], g[i+3][j]]
+                products.append((productify(seq2), seq2))
+
+            # x-pos y-neg products
+            if i < len(g) - 3 and j < len(g[i]) - 3:
+                seq3 = [g[i][j], g[i+1][j+1], g[i+2][j+2], g[i+3][j+3]]
+                products.append((productify(seq3), seq3))
+
+            # x-pos y-pos products
+            if i > 2 and j < len(g[i]) - 3:
+                seq4 = [g[i][j], g[i-1][j+1], g[i-2][j+2], g[i-3][j+3]]
+                products.append((productify(seq4), seq4))
     return products
 
-# find greatest product of four adjacent top-to-bottom
-def product_ttb(g):
-    products = []
-    for i in range(0, len(g)):
-        for j in range(0, len(g[i])):
-            if i <= len(g) - 4:
-                seq = [g[i][j], g[i+1][j], g[i+2][j], g[i+3][j]]
-                products.append((productify(seq), seq))
-            else:
-                break
-    return products
-
-# find the greatest product of four diagonal: x-positive y-positive
-def product_xposypos(g):
-    products = []
-    for i in range(0, len(g) - 3):
-        for j in range(0, len(g[i])):
-            if j <= len(g) - 4:
-                seq = [g[i][j], g[i+1][j+1], g[i+2][j+2], g[i+3][j+3]]
-                products.append((productify(seq), seq))
-            else:
-                break
-    return products
-
-# find the greatest product of four diagonal: x-positive y-negative
-def product_xposyneg(g):
-    products = []
-    for i in range(3, len(g)):
-        for j in range(0, len(g[i])):
-            if j <= len(g) - 4:
-                seq = [g[i][j], g[i-1][j+1], g[i-2][j+2], g[i-3][j+3]]
-                products.append((productify(seq), seq))
-            else:
-                break
-    return products
 
 # execute
 g = get_grid()
-ltr = product_ltr(g)
-ttb = product_ttb(g)
-xpyp = product_xposypos(g)
-xpyn = product_xposyneg(g)
+p = products(g)
 
 # compile result
-print(
-        max(
-            max(ltr),
-            max(ttb),
-            max(xpyp),
-            max(xpyn),
-            )
-        )
+print(max(p))
