@@ -2,6 +2,9 @@
 # What is the greatest product of four adjacent numbers in the same direction
 # (up, down, left, right, or diagonally) in the 20 20 grid?
 
+# def prod(iterable):
+#     return reduce(operator.mul, iterable, 1)
+
 # multiply numbers in a list together
 def productify(numberlist):
     product = 1
